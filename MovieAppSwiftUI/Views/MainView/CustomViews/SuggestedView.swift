@@ -46,7 +46,7 @@ struct SuggestedView: View {
                     .lineLimit(1)
                     .fixedSize(horizontal: false, vertical: true)
                     .truncationMode(.tail)
-                    .padding()
+                    .padding(.trailing, 10)
             }
             .padding(.horizontal, 5)
             .padding(.bottom, 5)
