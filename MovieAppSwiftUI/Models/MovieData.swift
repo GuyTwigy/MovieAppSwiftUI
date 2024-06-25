@@ -19,7 +19,7 @@ struct MoviesRoot: Codable {
     }
 }
 
-struct MovieData: Codable, Identifiable {
+struct MovieData: Codable, Identifiable, Equatable {
     let id: Int?
     let idString: String?
     let title: String?

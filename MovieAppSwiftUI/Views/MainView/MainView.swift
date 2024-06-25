@@ -32,88 +32,120 @@ struct MainView: View {
         MovieData(id: 6, idString: "6", title: "title 6", posterPath: "posterPath 6", overview: "overview 6", releaseDate: "releaseDate 6", originalLanguage: "originalLanguage 6", voteAverage: 5.0, date: Date())]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            TextField("Search...", text: $searchText, onEditingChanged: { isEditing in
-                if isEditing {
-                    selectedOption = .search
-                    optionTitle = "Search result for '\(searchText)'"
-                }
-            })
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
-            .padding(.horizontal)
-            .onChange(of: searchText) { _ in
-                if searchText != "" {
-                    optionTitle = "Search result for '\(searchText)'"
-                }
-            }
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 5) {
-                    ForEach(optionsArr, id: \.self) { item in
-                        Text(item)
-                            .font(.system(size: 14))
-                            .padding()
-                            .frame(height: 25)
-                            .background(selectedOption.rawValue == item ? Color.cyan : Color.white)
-                            .foregroundColor(selectedOption.rawValue == item ? Color.white : Color.black)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.black, lineWidth: 0.5)
-                            )
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                searchText = ""
-                                selectedOption = OptionsSelection(rawValue: item) ?? .top
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                optionTitle = selectedOption.rawValue
-                            }
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 10) {
+                TextField("Search...", text: $searchText, onEditingChanged: { isEditing in
+                    if isEditing {
+                        selectedOption = .search
+                        optionTitle = "Search result for '\(searchText)'"
                     }
-                }
+                })
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
                 .padding(.horizontal)
-            }
-            
-            ZStack(alignment: .leading) {
-                Color.white
-                    .frame(maxWidth: .infinity)
+                .onChange(of: searchText) { newValue in
+                    if !newValue.isEmpty {
+                        optionTitle = "Search result for '\(searchText)'"
+                        Task {
+                            await vm.fetchMovies(optionSelection: .search, query: searchText, page: 1, addContent: false)
+                        }
+                    }
+                }
                 
-                Text("Suggested Movies")
-                    .font(.headline)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 15) {
+                        ForEach(optionsArr, id: \.self) { item in
+                            Text(item)
+                                .font(.system(size: 14))
+                                .padding(.horizontal)
+                                .frame(height: 30)
+                                .background(selectedOption.rawValue == item ? Color.cyan : Color.white)
+                                .foregroundColor(selectedOption.rawValue == item ? Color.white : Color.black)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.black, lineWidth: 1)
+                                )
+                                .padding(.vertical, 3)
+                                .onTapGesture {
+                                    searchText = ""
+                                    selectedOption = OptionsSelection(rawValue: item) ?? .top
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                    optionTitle = selectedOption.rawValue
+                                    Task {
+                                        await vm.fetchMovies(optionSelection: selectedOption, query: "", page: 1, addContent: false)
+                                    }
+                                }
+                        }
+                    }
                     .padding(.horizontal)
-                    .foregroundColor(.black)
-            }
-            .frame(height: 25)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(vm.suggestedMovies, id: \.id) { movie in
-                        SuggestedView(movie: movie)
+                }
+                
+                ZStack(alignment: .leading) {
+                    Color.white
+                        .frame(maxWidth: .infinity)
+                    
+                    Text("Suggested Movies")
+                        .font(.headline)
+                        .padding(.horizontal)
+                        .foregroundColor(.black)
+                }
+                .frame(height: 25)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(vm.suggestedMovies, id: \.id) { movie in
+                            SuggestedView(movie: movie)
+                        }
+                    }
+                }
+                .padding(.vertical, -35.0)
+                
+                ZStack(alignment: .leading) {
+                    Color.white
+                        .frame(maxWidth: .infinity)
+                    
+                    Text(optionTitle)
+                        .font(.headline)
+                        .padding(.horizontal)
+                        .foregroundColor(.black)
+                }
+                .frame(height: 25)
+                
+                ScrollViewReader { proxy in
+                    List(vm.moviesList, id: \.id) { movie in
+                        SingleMovieView(movie: movie)
+                            .listRowBackground(Color(.systemGray2))
+                            .listRowSeparator(.hidden)
+                            .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
+                            .onAppear {
+                                if !vm.moviesList.isEmpty && movie == vm.moviesList[vm.moviesList.count - 3] {
+                                    Task {
+                                        await vm.fetchMovies(optionSelection: selectedOption, query: "", page: (vm.movieRoot?.page ?? 1) + 1, addContent: true)
+                                    }
+                                }
+                            }
+                            .id(movie.id)
+                    }
+                    .listStyle(PlainListStyle())
+                    .onChange(of: selectedOption) { _ in
+                        withAnimation {
+                            proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
+                        }
+                    }
+                    .onChange(of: searchText) { _ in
+                        withAnimation {
+                            proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
+                        }
                     }
                 }
             }
-            .frame(width: UIScreen.main.bounds.width, height: 200)
-            .padding(.leading, 10)
-            .padding(.vertical, -50.0)
-            
-            ZStack(alignment: .leading) {
-                Color.white
-                    .frame(maxWidth: .infinity)
-                
-                Text(optionTitle)
-                    .font(.headline)
-                    .padding(.horizontal)
-                    .foregroundColor(.black)
+            .background(Color(.systemGray2))
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
-            .frame(height: 25)
-            
-            List(moreMovies) { movie in
-                SingleMovieView(movie: movie)
-            }
-            .listStyle(PlainListStyle())
         }
-        .background(Color(.systemGray2))
     }
 }
 

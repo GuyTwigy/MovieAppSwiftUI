@@ -16,11 +16,11 @@ struct SingleMovieView: View {
     var body: some View {
         VStack {
             HStack {
-                if let imageURL = URL(string: movie.posterPath ?? "") {
+                if let imageURL = Utils.getImageUrl(posterPath: movie.posterPath ?? "") {
                     KFImage(imageURL)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 150, height: 150)
+                        .frame(width: 40)
                         .clipped()
                         .cornerRadius(8)
                         .overlay(
@@ -31,7 +31,7 @@ struct SingleMovieView: View {
                     Image(systemName: "photo")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 150)
+                        .frame(width: 40, height: 60)
                         .clipped()
                         .cornerRadius(8)
                         .overlay(
@@ -41,14 +41,19 @@ struct SingleMovieView: View {
                         .background(Color.gray)
                 }
                 
+                Spacer()
+                
                 Text(movie.title ?? "")
-                    .font(.headline)
+                    .font(.system(size: 15))
                     .foregroundColor(.black)
                     .lineLimit(3)
-                    .fixedSize(horizontal: false, vertical: true)
+                    .fixedSize(horizontal: false, vertical: false)
                     .truncationMode(.tail)
+                    .padding(.vertical, 5.0)
+                
                 Spacer()
             }
+            .frame(height: 50)
             .padding()
             .background(Color.white)
             .cornerRadius(8)
@@ -60,5 +65,5 @@ struct SingleMovieView: View {
 }
 
 #Preview {
-    SingleMovieView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "posterPath1", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
+    SingleMovieView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "posterPath1", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
 }

@@ -31,7 +31,6 @@ struct SuggestedView: View {
                     .background(Color.gray)
             }
             
-            
             VStack(alignment: .leading, spacing: 4) {
                 Text(movie.title ?? "")
                     .font(.headline)
