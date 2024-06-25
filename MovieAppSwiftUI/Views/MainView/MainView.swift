@@ -32,7 +32,7 @@ struct MainView: View {
         MovieData(id: 6, idString: "6", title: "title 6", posterPath: "posterPath 6", overview: "overview 6", releaseDate: "releaseDate 6", originalLanguage: "originalLanguage 6", voteAverage: 5.0, date: Date())]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) { // Reduce spacing to 10
+        VStack(alignment: .leading, spacing: 10) {
             TextField("Search...", text: $searchText, onEditingChanged: { isEditing in
                 if isEditing {
                     selectedOption = .search
@@ -91,10 +91,10 @@ struct MainView: View {
                     ForEach(vm.suggestedMovies, id: \.id) { movie in
                         SuggestedView(movie: movie)
                     }
-                    .frame(width: 250, height: 200)
                 }
-                .padding(.bottom , 0)
             }
+            .frame(width: UIScreen.main.bounds.width, height: 200)
+            .padding(.leading, 10)
             .padding(.vertical, -50.0)
             
             ZStack(alignment: .leading) {
@@ -109,11 +109,10 @@ struct MainView: View {
             .frame(height: 25)
             
             List(moreMovies) { movie in
-                Text(movie.title ?? "")
+                SingleMovieView(movie: movie)
             }
             .listStyle(PlainListStyle())
         }
-        .padding(.top, 20)
         .background(Color(.systemGray2))
     }
 }

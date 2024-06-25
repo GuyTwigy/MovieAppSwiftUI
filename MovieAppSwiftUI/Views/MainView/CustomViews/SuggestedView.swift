@@ -6,17 +6,31 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct SuggestedView: View {
     let movie: MovieData
     
     var body: some View {
         HStack() {
-            Image(systemName: "film")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 50, height: 50)
-                .padding()
+            if let imageURL = Utils.getImageUrl(posterPath: movie.posterPath ?? "") {
+                KFImage(imageURL)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 65, height: 65)
+                    .clipped()
+                    .cornerRadius(8)
+                    .padding()
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 65, height: 65)
+                    .clipped()
+                    .cornerRadius(8)
+                    .background(Color.gray)
+            }
+            
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(movie.title ?? "")
@@ -25,6 +39,7 @@ struct SuggestedView: View {
                     .lineLimit(3)
                     .fixedSize(horizontal: false, vertical: true)
                     .truncationMode(.tail)
+                    .padding(.trailing, 10)
                 
                 Text(String(format: "Rating: %.2f/10", movie.voteAverage ?? 0.0))
                     .font(.subheadline)
