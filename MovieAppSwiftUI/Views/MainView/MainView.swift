@@ -78,16 +78,23 @@ struct MainView: View {
                 }
                 .frame(height: 25)
                 
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
-                        ForEach(vm.suggestedMovies, id: \.id) { movie in
-                            NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
-                                SuggestedView(movie: movie)
+                if !vm.suggestedError {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) {
+                            ForEach(vm.suggestedMovies, id: \.id) { movie in
+                                NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
+                                    SuggestedView(movie: movie)
+                                }
                             }
                         }
                     }
+                    .padding(.vertical, -50.0)
+                } else if vm.suggestedMovies.isEmpty {
+                    ErrorView(showError: $vm.suggestedError, errorMessage: "Suggested movies are not available")
+                        .foregroundColor(.black)
+                        .padding()
+                        .frame(height: 100)
                 }
-                .padding(.vertical, -50.0)
                 
                 ZStack(alignment: .leading) {
                     Color.white
@@ -100,45 +107,62 @@ struct MainView: View {
                 }
                 .frame(height: 25)
                 
-                ScrollViewReader { proxy in
-                    List(vm.moviesList, id: \.id) { movie in
-                        ZStack {
-                            SingleMovieView(movie: movie)
-                                .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
-                                .onAppear {
-                                    if !vm.moviesList.isEmpty && movie == vm.moviesList[vm.moviesList.count - 3] {
-                                        Task {
-                                            await vm.fetchMovies(optionSelection: selectedOption, query: "", page: (vm.movieRoot?.page ?? 1) + 1, addContent: true)
+                if !vm.fetchingError {
+                    ScrollViewReader { proxy in
+                        if !vm.moviesList.isEmpty {
+                            List(vm.moviesList, id: \.id) { movie in
+                                ZStack {
+                                    SingleMovieView(movie: movie)
+                                        .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
+                                        .onAppear {
+                                            let movieListIndex = vm.moviesList.count - 3 < 0 ? 0 : vm.moviesList.count - 3
+                                            if !vm.moviesList.isEmpty && (movie == vm.moviesList[movieListIndex]) {
+                                                Task {
+                                                    await vm.fetchMovies(optionSelection: selectedOption, query: "", page: (vm.movieRoot?.page ?? 1) + 1, addContent: true)
+                                                }
+                                            }
                                         }
+                                    NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
+                                        EmptyView()
                                     }
+                                    .opacity(0)
                                 }
-                            NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
-                                EmptyView()
+                                .background(Color(.systemGray2))
+                                .listRowBackground(Color(.systemGray2))
+                                .listRowSeparator(.hidden)
                             }
-                            .opacity(0)
+                            .listStyle(PlainListStyle())
+                            .background(Color(.systemGray2))
+                            .gesture(DragGesture().onChanged { _ in
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            })
+                            .onChange(of: selectedOption) { _ in
+                                withAnimation {
+                                    proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
+                                }
+                            }
+                            .onChange(of: searchText) { _ in
+                                withAnimation {
+                                    proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
+                                }
+                            }
+                        } else {
+                            Text("No Movies Result To Show")
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding()
+                                
+                            
+                            Spacer()
                         }
-                        .background(Color(.systemGray2))
-                        .listRowBackground(Color(.systemGray2))
-                        .listRowSeparator(.hidden)
                     }
-                    .listStyle(PlainListStyle())
-                    .background(Color(.systemGray2))
-                    .gesture(DragGesture().onChanged { _ in
-                                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                        })
-                    .onChange(of: selectedOption) { _ in
-                        withAnimation {
-                            proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
-                        }
-                    }
-                    .onChange(of: searchText) { _ in
-                        withAnimation {
-                            proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
-                        }
-                    }
+                } else if vm.moviesList.isEmpty {
+                    ErrorView(showError: $vm.fetchingError, errorMessage: "Fail fetching more data")
+                        .foregroundColor(.black)
+                        .padding()
+                } else {
+                    Spacer()
                 }
-                
-                
             }
             .background(Color(.systemGray2))
         }
