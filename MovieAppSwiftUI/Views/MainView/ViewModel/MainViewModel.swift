@@ -15,7 +15,6 @@ class MainViewModel: ObservableObject {
     @Published var suggestedError: Bool = false
     @Published var fetchingError: Bool = false
     
-    
     var movieRoot: MoviesRoot?
     var dataService = NetworkManager()
     

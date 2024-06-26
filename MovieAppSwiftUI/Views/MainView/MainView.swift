@@ -13,7 +13,8 @@ struct MainView: View {
     @State private var searchText = ""
     @State private var selectedOption: OptionsSelection = .top
     @State private var optionTitle = "Top Rated"
-    
+    @State private var isFlipped = false
+
     private let optionsArr: [String] = ["Top Rated", "Popular", "Trending", "Now Playing", "Upcoming"]
     
     var body: some View {
@@ -58,6 +59,9 @@ struct MainView: View {
                                     selectedOption = OptionsSelection(rawValue: item) ?? .top
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     optionTitle = selectedOption.rawValue
+                                    withAnimation(.easeInOut(duration: 0.6)) {
+                                        isFlipped.toggle()
+                                    }
                                     Task {
                                         await vm.fetchMovies(optionSelection: selectedOption, query: "", page: 1, addContent: false)
                                     }
@@ -156,6 +160,10 @@ struct MainView: View {
                             Spacer()
                         }
                     }
+                    .rotation3DEffect(
+                        .degrees(isFlipped ? 360 : 0),
+                        axis: (x: 0, y: 1, z: 0)
+                    )
                 } else if vm.moviesList.isEmpty {
                     ErrorView(showError: $vm.fetchingError, errorMessage: "Fail fetching more data")
                         .foregroundColor(.black)
