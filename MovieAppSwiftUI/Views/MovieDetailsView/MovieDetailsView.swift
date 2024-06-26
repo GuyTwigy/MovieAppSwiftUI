@@ -9,12 +9,13 @@ import SwiftUI
 import Kingfisher
 
 struct MovieDetailsView: View {
+    
     @ObservedObject var vm: MovieDetailsViewModel
-
+    @State private var showTrailerSheet = false
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
-                
                 Text(vm.movie?.title ?? "")
                     .multilineTextAlignment(.center)
                     .font(.system(size: 30, weight: .bold))
@@ -60,12 +61,15 @@ struct MovieDetailsView: View {
                     }
                 }
                 
-                ZStack() {
+                ZStack {
                     HStack {
                         Button(action: {
-                           print("show triler tapped")
+                            print("show trailer tapped")
                             Task {
                                 await vm.getTrailer(id: vm.movie?.id ?? 1)
+                                if vm.video != nil {
+                                    showTrailerSheet = true
+                                }
                             }
                         }) {
                             Spacer()
@@ -80,10 +84,16 @@ struct MovieDetailsView: View {
                         .padding(.horizontal, 10)
                     }
                 }
-                
             }
             .background(Color(UIColor.systemBackground))
             .edgesIgnoringSafeArea(.all)
+        }
+        .sheet(isPresented: $showTrailerSheet) {
+            if let video = vm.video {
+                TrailerView(vm: TrailerViewModel(videoKey: video.key))
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            }
         }
     }
 }
