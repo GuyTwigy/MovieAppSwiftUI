@@ -22,20 +22,34 @@ struct MovieDetailsView: View {
                     .padding(.horizontal)
                     .padding(.top, 10)
                 
-                if let imageURL = Utils.getImageUrl(posterPath: vm.movie?.posterPath ?? "") {
-                    KFImage(imageURL)
-                        .resizable()
-                        .frame(minWidth: UIScreen.main.bounds.width)
-                        .aspectRatio(contentMode: .fill)
-                } else {
-                    Image(systemName: "photo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity)
-                        .clipped()
-                        .cornerRadius(8)
-                        .background(Color.gray)
-                        .padding()
+                ZStack(alignment: .topTrailing) {
+                    if let imageURL = Utils.getImageUrl(posterPath: vm.movie?.posterPath ?? "") {
+                        KFImage(imageURL)
+                            .resizable()
+                            .frame(minWidth: UIScreen.main.bounds.width)
+                            .aspectRatio(contentMode: .fill)
+                    } else {
+                        Image(systemName: "photo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                            .clipped()
+                            .cornerRadius(8)
+                            .background(Color.gray)
+                            .padding()
+                    }
+                    
+                    Button(action: {
+                        print("share tapped")
+                    }) {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
+                            .padding(10)
+                            .background(Color.white.opacity(0.7))
+                            .cornerRadius(15)
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 10) {
@@ -46,6 +60,26 @@ struct MovieDetailsView: View {
                     }
                 }
                 
+                ZStack() {
+                    HStack {
+                        Button(action: {
+                           print("show triler tapped")
+                            Task {
+                                await vm.getTrailer(id: vm.movie?.id ?? 1)
+                            }
+                        }) {
+                            Spacer()
+                            Text("Show Trailer")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .foregroundColor(Color.white)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 10)
+                    }
+                }
                 
             }
             .background(Color(UIColor.systemBackground))
