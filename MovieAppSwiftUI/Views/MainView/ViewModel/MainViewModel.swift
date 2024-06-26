@@ -12,6 +12,9 @@ class MainViewModel: ObservableObject {
     
     @Published var suggestedMovies: [MovieData] = []
     @Published var moviesList: [MovieData] = []
+    @Published var suggestedError: Bool = false
+    @Published var fetchingError: Bool = false
+    
     
     var movieRoot: MoviesRoot?
     var dataService = NetworkManager()
@@ -29,7 +32,7 @@ class MainViewModel: ObservableObject {
             self.suggestedMovies = movies
         } catch {
             print("Error: \(error.localizedDescription)")
-            // handle error
+            suggestedError = true
         }
     }
     
@@ -41,11 +44,14 @@ class MainViewModel: ObservableObject {
             if addContent {
                 self.moviesList.append(contentsOf: moviesRoot.results ?? [])
             } else {
+                self.moviesList.removeAll()
                 self.moviesList = moviesRoot.results ?? []
             }
         } catch {
             print("Error: \(error.localizedDescription)")
-            // handle error
+            if moviesList.isEmpty {
+                fetchingError = true
+            }
         }
     }
 }

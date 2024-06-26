@@ -16,7 +16,7 @@ struct ErrorView: View {
         VStack {
             Text(errorMessage)
                 .font(.headline)
-                .padding(.top, 80)
+                .padding()
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
