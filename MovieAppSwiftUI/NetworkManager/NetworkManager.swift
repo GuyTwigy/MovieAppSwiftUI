@@ -28,7 +28,7 @@ extension NetworkManager: FetchMoviesProtocol {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
+//        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -78,18 +78,15 @@ extension NetworkManager: FetchMoviesProtocol {
             components = URLComponents(string: "\(baseUrl)\(AppConstant.EndPoints.movie.description)\(AppConstant.EndPoints.upcoming.description)") ?? URLComponents()
         case .search:
             components = URLComponents(string: "\(baseUrl)\(AppConstant.EndPoints.search.description)\(AppConstant.EndPoints.movie.description)") ?? URLComponents()
-            components.queryItems = [
-                URLQueryItem(name: "api_key", value: apiKey),
-                URLQueryItem(name: "query", value: query),
-                URLQueryItem(name: "page", value: String(page)),
-            ]
         }
         
-        if optionSelected != .search {
-            components.queryItems = [
-                URLQueryItem(name: "api_key", value: apiKey),
-                URLQueryItem(name: "page", value: String(page)),
-            ]
+        components.queryItems = [
+            URLQueryItem(name: "api_key", value: apiKey),
+            URLQueryItem(name: "page", value: String(page)),
+        ]
+        
+        if optionSelected == .search {
+            components.queryItems?.append(URLQueryItem(name: "query", value: query))
         }
         
         do {
@@ -108,7 +105,6 @@ extension NetworkManager: FetchMoviesProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
 //        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
-//        request.cachePolicy = .useProtocolCachePolicy
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

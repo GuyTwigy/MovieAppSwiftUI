@@ -21,6 +21,7 @@ class TrailerViewModel: ObservableObject {
     }
     
     func loadVideo() {
+        showError = false
         let urlString = "https://www.youtube.com/embed/\(videoKey)"
         if let url = URL(string: urlString) {
             let request = URLRequest(url: url)

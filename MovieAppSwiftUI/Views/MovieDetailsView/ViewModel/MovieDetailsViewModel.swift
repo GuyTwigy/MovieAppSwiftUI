@@ -13,6 +13,8 @@ class MovieDetailsViewModel: ObservableObject {
     @Published var movie: MovieData?
     @Published var detailsArr: [SingleDetail] = []
     @Published var video: VideoData?
+    @Published var showUIError: Bool = false
+    @Published var showTrailerError: Bool = false
     
     var dataService: GetTrailerProtocol
     
@@ -28,6 +30,7 @@ class MovieDetailsViewModel: ObservableObject {
     }
     
     func updateUI() {
+        showUIError = false
         if let movie {
             detailsArr.removeAll()
             detailsArr = [SingleDetail(title: "Overiew:", description: movie.overview ?? "Not Available"),
@@ -36,12 +39,13 @@ class MovieDetailsViewModel: ObservableObject {
                           SingleDetail(title: "Release Date:", description: movie.releaseDate ?? "Not Available")]
             self.movie = movie
         } else {
-            // handle error
+            showUIError = true
         }
     }
     
     func getTrailer(id: Int) async {
         do {
+            showTrailerError = false
             let videoData = try await dataService.getTrailer(id: "\(id)")
             if let trailerVideo = videoData.first(where: { $0.type == "Trailer" }) {
                 self.video = trailerVideo
@@ -52,7 +56,7 @@ class MovieDetailsViewModel: ObservableObject {
             }
         } catch {
             print("Error: \(error.localizedDescription)")
-            // handle error
+            showTrailerError = true
         }
     }
 }
