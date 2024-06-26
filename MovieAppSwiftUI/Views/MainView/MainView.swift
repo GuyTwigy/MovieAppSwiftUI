@@ -13,6 +13,7 @@ struct MainView: View {
     @State private var searchText = ""
     @State private var selectedOption: OptionsSelection = .top
     @State private var optionTitle = "Top Rated"
+    @State private var isFlipped = false
     
     private let optionsArr: [String] = ["Top Rated", "Popular", "Trending", "Now Playing", "Upcoming"]
     
@@ -58,6 +59,9 @@ struct MainView: View {
                                     selectedOption = OptionsSelection(rawValue: item) ?? .top
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                     optionTitle = selectedOption.rawValue
+                                    withAnimation(.easeInOut(duration: 0.6)) {
+                                        isFlipped.toggle()
+                                    }
                                     Task {
                                         await vm.fetchMovies(optionSelection: selectedOption, query: "", page: 1, addContent: false)
                                     }
@@ -79,16 +83,28 @@ struct MainView: View {
                 .frame(height: 25)
                 
                 if !vm.suggestedError {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 10) {
-                            ForEach(vm.suggestedMovies, id: \.id) { movie in
-                                NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
-                                    SuggestedView(movie: movie)
+                    if !vm.suggestionIsLading {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 10) {
+                                ForEach(vm.suggestedMovies, id: \.id) { movie in
+                                    NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
+                                        SuggestedView(movie: movie)
+                                    }
                                 }
                             }
                         }
+                        .padding(.vertical, -50.0)
+                    } else {
+                        HStack {
+                            Spacer()
+                            
+                            ProgressView()
+                                .tint(.white)
+                            
+                            Spacer()
+                        }
+                        .frame(height: 80)
                     }
-                    .padding(.vertical, -50.0)
                 } else if vm.suggestedMovies.isEmpty {
                     ErrorView(showError: $vm.suggestedError, errorMessage: "Suggested movies are not available")
                         .foregroundColor(.black)
@@ -151,11 +167,14 @@ struct MainView: View {
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding()
-                                
                             
                             Spacer()
                         }
                     }
+                    .rotation3DEffect(
+                        .degrees(isFlipped ? 360 : 0),
+                        axis: (x: 0, y: 1, z: 0)
+                    )
                 } else if vm.moviesList.isEmpty {
                     ErrorView(showError: $vm.fetchingError, errorMessage: "Fail fetching more data")
                         .foregroundColor(.black)
