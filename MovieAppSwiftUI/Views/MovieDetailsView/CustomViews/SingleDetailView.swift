@@ -13,16 +13,22 @@ struct SingleDetailView: View {
     @State var subtitle: String
     
     var body: some View {
-        HStack {
-            Text(title)
-                .font(.headline)
-                .padding(.horizontal)
-                .foregroundColor(.black)
+        VStack (alignment: .leading) {
+            HStack {
+                Text(title)
+                    .font(.headline)
+                    .padding(.horizontal)
+                    .foregroundColor(.black)
+                
+                Text(subtitle)
+                    .font(.headline)
+                    .padding(.horizontal)
+                    .foregroundColor(.black)
+            }
             
-            Text(subtitle)
-                .font(.headline)
+            Divider()
+                .background(Color(.lightGray))
                 .padding(.horizontal)
-                .foregroundColor(.black)
         }
     }
 }

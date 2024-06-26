@@ -44,7 +44,7 @@ struct SingleMovieView: View {
                 Spacer()
                 
                 Text(movie.title ?? "")
-                    .font(.system(size: 15))
+                    .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(.black)
                     .lineLimit(3)
                     .fixedSize(horizontal: false, vertical: false)

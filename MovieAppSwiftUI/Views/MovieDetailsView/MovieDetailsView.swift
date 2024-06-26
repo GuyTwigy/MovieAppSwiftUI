@@ -9,60 +9,51 @@ import SwiftUI
 import Kingfisher
 
 struct MovieDetailsView: View {
-    @ObservedObject var MovieDetailsViewModel: MovieDetailsViewModel
+    @ObservedObject var vm: MovieDetailsViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Button(action: {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 10) {
                 
-            }) {
-                Image(systemName: "arrow.backward")
-                    .frame(width: 50, height: 50)
-                    .background(Color(UIColor.opaqueSeparator))
-                    .foregroundColor(.white)
-                    .cornerRadius(25)
-            }
-            .padding(.top)
-            .padding(.leading)
-
-            // Movie Title Label
-            Text(MovieDetailsViewModel.movie?.title ?? "")
-                .font(.system(size: 30, weight: .bold))
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal)
-                .padding(.top, 10)
-
-            List {
-                ForEach(MovieDetailsViewModel.detailsArr, id: \.self) { detail in
-                    SingleDetailView(title: detail.title, subtitle: detail.description)
+                Text(vm.movie?.title ?? "")
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 30, weight: .bold))
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.horizontal)
+                    .padding(.top, 10)
+                
+                if let imageURL = Utils.getImageUrl(posterPath: vm.movie?.posterPath ?? "") {
+                    KFImage(imageURL)
+                        .resizable()
+                        .frame(minWidth: UIScreen.main.bounds.width)
+                        .aspectRatio(contentMode: .fill)
+                } else {
+                    Image(systemName: "photo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity)
+                        .clipped()
+                        .cornerRadius(8)
+                        .background(Color.gray)
+                        .padding()
                 }
+                
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(vm.detailsArr, id: \.self) { detail in
+                        SingleDetailView(title: detail.title, subtitle: detail.description)
+                            .padding(.horizontal)
+                            .background(Color(UIColor.systemBackground))
+                    }
+                }
+                
+                
             }
             .background(Color(UIColor.systemBackground))
-            .listStyle(PlainListStyle())
-            
-            if let imageURL = Utils.getImageUrl(posterPath: MovieDetailsViewModel.movie?.posterPath ?? "") {
-                KFImage(imageURL)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 65, height: 65)
-                    .clipped()
-                    .cornerRadius(8)
-                    .padding()
-            } else {
-                Image(systemName: "photo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 65, height: 65)
-                    .clipped()
-                    .cornerRadius(8)
-                    .background(Color.gray)
-            }
+            .edgesIgnoringSafeArea(.all)
         }
-        .background(Color(UIColor.systemBackground))
-        .edgesIgnoringSafeArea(.all)
     }
 }
 
 #Preview {
-    MovieDetailsView(MovieDetailsViewModel: MovieDetailsViewModel(dataService: NetworkManager(), movie: MovieData(id: 1, idString: "1", title: "title 1", posterPath: "posterPath 1", overview: "overview 1", releaseDate: "releaseDate 1", originalLanguage: "originalLanguage 1", voteAverage: 10.0, date: Date())))
+    MovieDetailsView(vm: MovieDetailsViewModel(dataService: NetworkManager(), movie: MovieData(id: 1, idString: "1", title: "title 1 title 1 title 1 title 1 title 1 title 1 title 1 v", posterPath: "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg", overview: "overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1", releaseDate: "releaseDate 1", originalLanguage: "originalLanguage 1", voteAverage: 10.0, date: Date())))
 }

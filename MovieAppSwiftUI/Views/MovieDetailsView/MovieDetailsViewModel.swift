@@ -22,6 +22,7 @@ class MovieDetailsViewModel: ObservableObject {
     init(dataService: GetTrailerProtocol, movie: MovieData) {
         self.dataService = dataService
         self.movie = movie
+        updateUI()
     }
     
     func updateUI() {

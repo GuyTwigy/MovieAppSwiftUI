@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 
 struct SuggestedView: View {
+    
     let movie: MovieData
     
     var body: some View {
@@ -55,6 +56,7 @@ struct SuggestedView: View {
         .cornerRadius(8)
         .frame(width: UIScreen.main.bounds.width / 1.5, height: 200)
         .shadow(radius: 2)
+        .padding(.all, 10)
     }
 }
 
