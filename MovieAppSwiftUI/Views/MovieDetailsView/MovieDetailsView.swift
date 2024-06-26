@@ -8,43 +8,39 @@
 import SwiftUI
 import Kingfisher
 
+
 struct MovieDetailsView: View {
     
     @ObservedObject var vm: MovieDetailsViewModel
     @State private var showTrailerSheet = false
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var isShareSheetPresented = false
     
     var body: some View {
+        Text(vm.movie?.title ?? "")
+            .multilineTextAlignment(.center)
+            .font(.system(size: 30, weight: .bold))
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.horizontal)
+            .padding(.top, 10)
+        
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 if !vm.showUIError {
-                    Text(vm.movie?.title ?? "")
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 30, weight: .bold))
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
-                    
                     ZStack(alignment: .topTrailing) {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                        
                         if let imageURL = Utils.getImageUrl(posterPath: vm.movie?.posterPath ?? "") {
                             KFImage(imageURL)
                                 .resizable()
                                 .frame(minWidth: UIScreen.main.bounds.width)
                                 .aspectRatio(contentMode: .fill)
-                        } else {
-                            Image(systemName: "photo")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: .infinity)
-                                .clipped()
-                                .cornerRadius(8)
-                                .background(Color.gray)
-                                .padding()
                         }
                         
                         Button(action: {
-                            print("share tapped")
+                            isShareSheetPresented.toggle()
                         }) {
                             Image(systemName: "square.and.arrow.up")
                                 .resizable()
@@ -54,7 +50,13 @@ struct MovieDetailsView: View {
                                 .background(Color.white.opacity(0.7))
                                 .cornerRadius(15)
                         }
+                        .sheet(isPresented: $isShareSheetPresented) {
+                            if let movie = vm.movie {
+                                ShareSheetView(movie: movie)
+                            }
+                        }
                     }
+                    .padding()
                     
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(vm.detailsArr, id: \.self) { detail in

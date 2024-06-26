@@ -9,27 +9,25 @@ import SwiftUI
 import Kingfisher
 
 struct SuggestedView: View {
-    
     let movie: MovieData
+   
     
     var body: some View {
-        HStack() {
-            if let imageURL = Utils.getImageUrl(posterPath: movie.posterPath ?? "") {
-                KFImage(imageURL)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+        HStack {
+            ZStack {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
                     .frame(width: 65, height: 65)
-                    .clipped()
-                    .cornerRadius(8)
-                    .padding()
-            } else {
-                Image(systemName: "photo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 65, height: 65)
-                    .clipped()
-                    .cornerRadius(8)
-                    .background(Color.gray)
+                
+                if let imageURL = Utils.getImageUrl(posterPath: movie.posterPath ?? "") {
+                    KFImage(imageURL)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 65, height: 80)
+                        .clipped()
+                        .cornerRadius(8)
+                        .padding()
+                }
             }
             
             VStack(alignment: .leading, spacing: 4) {
@@ -61,5 +59,5 @@ struct SuggestedView: View {
 }
 
 #Preview {
-    SuggestedView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "posterPath1", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
+    SuggestedView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
 }

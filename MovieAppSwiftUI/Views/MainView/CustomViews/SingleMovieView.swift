@@ -16,29 +16,23 @@ struct SingleMovieView: View {
     var body: some View {
         VStack {
             HStack {
-                if let imageURL = Utils.getImageUrl(posterPath: movie.posterPath ?? "") {
-                    KFImage(imageURL)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 40)
-                        .clipped()
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.black, lineWidth: 1)
-                        )
-                } else {
-                    Image(systemName: "photo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 40, height: 60)
-                        .clipped()
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.black, lineWidth: 1)
-                        )
-                        .background(Color.gray)
+                ZStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .frame(width: 65, height: 65)
+                    
+                    if let imageURL = Utils.getImageUrl(posterPath: movie.posterPath ?? "") {
+                        KFImage(imageURL)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 40)
+                            .clipped()
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color.black, lineWidth: 1)
+                            )
+                    }
                 }
                 
                 Spacer()
@@ -65,5 +59,5 @@ struct SingleMovieView: View {
 }
 
 #Preview {
-    SingleMovieView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "posterPath1", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
+    SingleMovieView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
 }

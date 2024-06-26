@@ -31,6 +31,7 @@
 		9D2E181F2C2C40530089AE5C /* TrailerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E181E2C2C40530089AE5C /* TrailerViewModel.swift */; };
 		9D2E18222C2C44C20089AE5C /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18212C2C44C20089AE5C /* WebView.swift */; };
 		9D2E18262C2C59840089AE5C /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18252C2C59840089AE5C /* ErrorView.swift */; };
+		9D2E18282C2C9FFA0089AE5C /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		9D2E181E2C2C40530089AE5C /* TrailerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerViewModel.swift; sourceTree = "<group>"; };
 		9D2E18212C2C44C20089AE5C /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		9D2E18252C2C59840089AE5C /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				9D2E18212C2C44C20089AE5C /* WebView.swift */,
+				9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */,
 			);
 			path = HelperViews;
 			sourceTree = "<group>";
@@ -443,6 +446,7 @@
 				9D2E18262C2C59840089AE5C /* ErrorView.swift in Sources */,
 				9D274A392C2ACB25005FF14E /* SuggestedView.swift in Sources */,
 				9D2E180E2C2AEE760089AE5C /* Utils.swift in Sources */,
+				9D2E18282C2C9FFA0089AE5C /* ShareSheetView.swift in Sources */,
 				9D2E18122C2B2A4D0089AE5C /* MovieDetailsView.swift in Sources */,
 				9D274A322C2AC604005FF14E /* MovieData.swift in Sources */,
 				9D2E18222C2C44C20089AE5C /* WebView.swift in Sources */,
