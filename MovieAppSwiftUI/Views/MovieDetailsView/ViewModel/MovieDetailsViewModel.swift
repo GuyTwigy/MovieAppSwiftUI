@@ -7,17 +7,19 @@
 
 import Foundation
 
+@MainActor
 class MovieDetailsViewModel: ObservableObject {
     
+    @Published var movie: MovieData?
+    @Published var detailsArr: [SingleDetail] = []
+    @Published var video: VideoData?
+    
+    var dataService: GetTrailerProtocol
     
     struct SingleDetail: Hashable {
         let title: String
         let description: String
     }
-    
-    @Published var movie: MovieData?
-    @Published var detailsArr: [SingleDetail] = []
-    var dataService: GetTrailerProtocol
     
     init(dataService: GetTrailerProtocol, movie: MovieData) {
         self.dataService = dataService
@@ -33,7 +35,6 @@ class MovieDetailsViewModel: ObservableObject {
                           SingleDetail(title: "Language:", description: movie.originalLanguage ?? "Not Available"),
                           SingleDetail(title: "Release Date:", description: movie.releaseDate ?? "Not Available")]
             self.movie = movie
-            
         } else {
             // handle error
         }
@@ -41,11 +42,17 @@ class MovieDetailsViewModel: ObservableObject {
     
     func getTrailer(id: Int) async {
         do {
-            let videoData = try await dataService.getTrailer(id: String(id))
-            
+            let videoData = try await dataService.getTrailer(id: "\(id)")
+            if let trailerVideo = videoData.first(where: { $0.type == "Trailer" }) {
+                self.video = trailerVideo
+            } else if let clipVideo = videoData.first(where: { $0.type == "Clip" })  {
+                self.video = clipVideo
+            } else {
+                self.video = videoData.first
+            }
         } catch {
             print("Error: \(error.localizedDescription)")
+            // handle error
         }
     }
 }
-
