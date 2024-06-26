@@ -107,8 +107,8 @@ extension NetworkManager: FetchMoviesProtocol {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
-        request.cachePolicy = .useProtocolCachePolicy
+//        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
+//        request.cachePolicy = .useProtocolCachePolicy
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

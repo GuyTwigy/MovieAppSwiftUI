@@ -15,24 +15,9 @@ struct MainView: View {
     @State private var optionTitle = "Top Rated"
     
     private let optionsArr: [String] = ["Top Rated", "Popular", "Trending", "Now Playing", "Upcoming"]
-    private let movieData: [MovieData] = [
-        MovieData(id: 1, idString: "1", title: "title 1", posterPath: "posterPath 1", overview: "overview 1", releaseDate: "releaseDate 1", originalLanguage: "originalLanguage 1", voteAverage: 10.0, date: Date()),
-        MovieData(id: 2, idString: "2", title: "title 2", posterPath: "posterPath 2", overview: "overview 2", releaseDate: "releaseDate 2", originalLanguage: "originalLanguage 2", voteAverage: 9.0, date: Date()),
-        MovieData(id: 3, idString: "3", title: "title 3", posterPath: "posterPath 3", overview: "overview 3", releaseDate: "releaseDate 3", originalLanguage: "originalLanguage 3", voteAverage: 8.0, date: Date()),
-        MovieData(id: 4, idString: "4", title: "title 4", posterPath: "posterPath 4", overview: "overview 4", releaseDate: "releaseDate 4", originalLanguage: "originalLanguage 4", voteAverage: 7.0, date: Date()),
-        MovieData(id: 5, idString: "5", title: "title 5", posterPath: "posterPath 5", overview: "overview 5", releaseDate: "releaseDate 5", originalLanguage: "originalLanguage 5", voteAverage: 6.0, date: Date()),
-        MovieData(id: 6, idString: "6", title: "title 6", posterPath: "posterPath 6", overview: "overview 6", releaseDate: "releaseDate 6", originalLanguage: "originalLanguage 6", voteAverage: 5.0, date: Date())]
-    
-    private let moreMovies: [MovieData] = [
-        MovieData(id: 1, idString: "1", title: "title 1", posterPath: "posterPath 1", overview: "overview 1", releaseDate: "releaseDate 1", originalLanguage: "originalLanguage 1", voteAverage: 10.0, date: Date()),
-        MovieData(id: 2, idString: "2", title: "title 2", posterPath: "posterPath 2", overview: "overview 2", releaseDate: "releaseDate 2", originalLanguage: "originalLanguage 2", voteAverage: 9.0, date: Date()),
-        MovieData(id: 3, idString: "3", title: "title 3", posterPath: "posterPath 3", overview: "overview 3", releaseDate: "releaseDate 3", originalLanguage: "originalLanguage 3", voteAverage: 8.0, date: Date()),
-        MovieData(id: 4, idString: "4", title: "title 4", posterPath: "posterPath 4", overview: "overview 4", releaseDate: "releaseDate 4", originalLanguage: "originalLanguage 4", voteAverage: 7.0, date: Date()),
-        MovieData(id: 5, idString: "5", title: "title 5", posterPath: "posterPath 5", overview: "overview 5", releaseDate: "releaseDate 5", originalLanguage: "originalLanguage 5", voteAverage: 6.0, date: Date()),
-        MovieData(id: 6, idString: "6", title: "title 6", posterPath: "posterPath 6", overview: "overview 6", releaseDate: "releaseDate 6", originalLanguage: "originalLanguage 6", voteAverage: 5.0, date: Date())]
     
     var body: some View {
-        GeometryReader { geometry in
+        NavigationView {
             VStack(alignment: .leading, spacing: 10) {
                 TextField("Search...", text: $searchText, onEditingChanged: { isEditing in
                     if isEditing {
@@ -96,11 +81,13 @@ struct MainView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(vm.suggestedMovies, id: \.id) { movie in
-                            SuggestedView(movie: movie)
+                            NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
+                                SuggestedView(movie: movie)
+                            }
                         }
                     }
                 }
-                .padding(.vertical, -35.0)
+                .padding(.vertical, -50.0)
                 
                 ZStack(alignment: .leading) {
                     Color.white
@@ -115,20 +102,30 @@ struct MainView: View {
                 
                 ScrollViewReader { proxy in
                     List(vm.moviesList, id: \.id) { movie in
-                        SingleMovieView(movie: movie)
-                            .listRowBackground(Color(.systemGray2))
-                            .listRowSeparator(.hidden)
-                            .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
-                            .onAppear {
-                                if !vm.moviesList.isEmpty && movie == vm.moviesList[vm.moviesList.count - 3] {
-                                    Task {
-                                        await vm.fetchMovies(optionSelection: selectedOption, query: "", page: (vm.movieRoot?.page ?? 1) + 1, addContent: true)
+                        ZStack {
+                            SingleMovieView(movie: movie)
+                                .frame(width: UIScreen.main.bounds.width * 0.9, height: 80)
+                                .onAppear {
+                                    if !vm.moviesList.isEmpty && movie == vm.moviesList[vm.moviesList.count - 3] {
+                                        Task {
+                                            await vm.fetchMovies(optionSelection: selectedOption, query: "", page: (vm.movieRoot?.page ?? 1) + 1, addContent: true)
+                                        }
                                     }
                                 }
+                            NavigationLink(destination: MovieDetailsView(vm: MovieDetailsViewModel(dataService: vm.dataService, movie: movie))) {
+                                EmptyView()
                             }
-                            .id(movie.id)
+                            .opacity(0)
+                        }
+                        .background(Color(.systemGray2))
+                        .listRowBackground(Color(.systemGray2))
+                        .listRowSeparator(.hidden)
                     }
                     .listStyle(PlainListStyle())
+                    .background(Color(.systemGray2))
+                    .gesture(DragGesture().onChanged { _ in
+                                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                        })
                     .onChange(of: selectedOption) { _ in
                         withAnimation {
                             proxy.scrollTo(vm.moviesList.first?.id, anchor: .top)
@@ -140,12 +137,13 @@ struct MainView: View {
                         }
                     }
                 }
+                
+                
             }
             .background(Color(.systemGray2))
-            .onTapGesture {
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-            }
         }
+        .navigationBarTitle("", displayMode: .inline)
+        .navigationBarHidden(true)
     }
 }
 

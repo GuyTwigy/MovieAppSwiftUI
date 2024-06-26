@@ -5,6 +5,7 @@
 //  Created by Guy Twig on 25/06/2024.
 //
 
+import SwiftUI
 import Foundation
 
 class MainViewModel: ObservableObject {
