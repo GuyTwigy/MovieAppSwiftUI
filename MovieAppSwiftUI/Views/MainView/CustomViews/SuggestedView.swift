@@ -23,9 +23,13 @@ struct SuggestedView: View {
                     KFImage(imageURL)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 65, height: 80)
+                        .frame(width: 65, height: 90)
                         .clipped()
                         .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.black, lineWidth: 1)
+                        )
                         .padding()
                 }
             }
