@@ -18,7 +18,7 @@ class NetworkManager {
         self.session = session
     }
     
-    func getRequestData<T: Decodable>(components: URLComponents?, type: T.Type) async throws -> T {
+    func getRequestData<T: Decodable>(clearCache: Bool, components: URLComponents?, type: T.Type) async throws -> T {
         guard let url = components?.url else {
             throw URLError(.badURL)
         }
@@ -27,10 +27,9 @@ class NetworkManager {
         request.httpMethod = "GET"
         request.cachePolicy = .useProtocolCachePolicy
         
-        if MovieAppManager.share.lastFetchedDate ?? Date() < Utils.dateBeforeNow(seconds: 86400) {
+        if clearCache {
             URLCache.shared.removeCachedResponse(for: request)
         }
-        MovieAppManager.share.lastFetchedDate = Date()
         
         let (data, response) = try await session.data(for: request)
         

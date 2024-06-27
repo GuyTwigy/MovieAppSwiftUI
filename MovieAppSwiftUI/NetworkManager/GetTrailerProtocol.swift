@@ -20,7 +20,7 @@ extension NetworkManager: GetTrailerProtocol {
         ]
         
         do {
-            let videoResponse = try await getRequestData(components: components, type: VideosResponse.self)
+            let videoResponse = try await getRequestData(clearCache: false, components: components, type: VideosResponse.self)
             return videoResponse.results
         } catch {
             throw error

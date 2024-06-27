@@ -45,6 +45,11 @@ struct AppConstant {
     }
     
     struct UserDefualtsKey {
-        static let lastFetchedDate: String = "lastFetchedDate"
+        static let lastFetchedSuggestedMoviesDate: String = "lastFetchedSuggestedMoviesDate"
+        static let lastFetchedTopMoviesDate: String = "lastFetchedTopMoviesDate"
+        static let lastFetchedPopularMoviesDate: String = "lastFetchedPopularMoviesDate"
+        static let lastFetchedTrendingMoviesDate: String = "lastFetchedTrendingMoviesDate"
+        static let lastFetchedNowPlayingMoviesDate: String = "lastFetchedNowPlayingMoviesDate"
+        static let lastFetchedUpcomingMoviesDate: String = "lastFetchedUpcomingMoviesDate"
     }
 }

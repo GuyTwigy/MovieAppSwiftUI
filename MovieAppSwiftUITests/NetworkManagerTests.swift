@@ -30,7 +30,7 @@ final class NetworkManagerTests: XCTestCase {
         
         //Wenn
         do {
-            _ = try await networkManager?.getRequestData(components: nil, type: MovieData.self)
+            _ = try await networkManager?.getRequestData(clearCache: false, components: nil, type: MovieData.self)
             XCTFail()
         } catch {
             //Tehn
@@ -44,7 +44,7 @@ final class NetworkManagerTests: XCTestCase {
         
         //Wenn
         do {
-            _ = try await networkManager?.getRequestData(components: URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")"), type: MovieData.self)
+            _ = try await networkManager?.getRequestData(clearCache: false, components: URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")"), type: MovieData.self)
             XCTFail()
         } catch {
             //Then
@@ -58,7 +58,7 @@ final class NetworkManagerTests: XCTestCase {
         
         //When
         do {
-            _ = try await networkManager?.getRequestData(components: URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")"), type: MovieData.self)
+            _ = try await networkManager?.getRequestData(clearCache: false, components: URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")"), type: MovieData.self)
             XCTFail()
         } catch {
             //Then
@@ -72,7 +72,7 @@ final class NetworkManagerTests: XCTestCase {
         
         //When
         do {
-            _ = try await networkManager?.getRequestData(components: URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")"), type: MovieData.self)
+            _ = try await networkManager?.getRequestData(clearCache: false, components: URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")"), type: MovieData.self)
             XCTFail()
         } catch {
             //Then
@@ -91,7 +91,7 @@ final class NetworkManagerTests: XCTestCase {
         
         // When
         let components = URLComponents(string: "\(networkManager?.baseUrl ?? "")\(AppConstant.EndPoints.movie.description)/1817?api_key=\(networkManager?.apiKey ?? "")")
-        let result = try await networkManager?.getRequestData(components: components, type: MovieData.self)
+        let result = try await networkManager?.getRequestData(clearCache: false, components: components, type: MovieData.self)
         
         // Then
         XCTAssertEqual(result, movieData)
