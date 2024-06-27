@@ -83,7 +83,7 @@ struct MainView: View {
                 .frame(height: 25)
                 
                 if !vm.suggestedError {
-                    if !vm.suggestionIsLading {
+                    if !vm.suggestionIsLoading {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 10) {
                                 ForEach(vm.suggestedMovies, id: \.id) { movie in

@@ -14,7 +14,7 @@ class MainViewModel: ObservableObject {
     @Published var moviesList: [MovieData] = []
     @Published var suggestedError: Bool = false
     @Published var fetchingError: Bool = false
-    @Published var suggestionIsLading: Bool = false
+    @Published var suggestionIsLoading: Bool = false
     
     var movieRoot: MoviesRoot?
     var dataService = NetworkManager()
@@ -28,14 +28,14 @@ class MainViewModel: ObservableObject {
     
     func fetchSuggestions() async {
         suggestedError = false
-        suggestionIsLading = true
+        suggestionIsLoading = true
         do {
             let movies = try await dataService.fetchMultipleSuggestions(ids: ["1817", "745", "769", "278", "429"])
-            suggestionIsLading = false
+            suggestionIsLoading = false
             self.suggestedMovies = movies
         } catch {
             print("Error: \(error.localizedDescription)")
-            suggestionIsLading = false
+            suggestionIsLoading = false
             suggestedError = true
         }
     }
