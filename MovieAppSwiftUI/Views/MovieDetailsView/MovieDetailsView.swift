@@ -135,5 +135,5 @@ struct MovieDetailsView: View {
 }
 
 #Preview {
-    MovieDetailsView(vm: MovieDetailsViewModel(dataService: NetworkManager(), movie: MovieData(id: 1, idString: "1", title: "title 1 title 1 title 1 title 1 title 1 title 1 title 1 v", posterPath: "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg", overview: "overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1", releaseDate: "releaseDate 1", originalLanguage: "originalLanguage 1", voteAverage: 10.0, date: Date())))
+    MovieDetailsView(vm: MovieDetailsViewModel(dataService: NetworkManager(), movie: MovieData(id: 1, title: "title 1 title 1 title 1 title 1 title 1 title 1 title 1 v", posterPath: "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg", overview: "overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1 overview 1", releaseDate: "releaseDate 1", originalLanguage: "originalLanguage 1", voteAverage: 1)))
 }

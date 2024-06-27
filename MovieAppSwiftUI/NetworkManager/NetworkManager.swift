@@ -8,10 +8,36 @@
 import Foundation
 
 class NetworkManager {
-
+    
     let baseUrl = "https://api.themoviedb.org/3"
     let apiKey = "ab0f464004f9fe46240dab71b2b89a08"
     
+    private func getRequestData<T: Decodable>(components: URLComponents?, type: T.Type) async throws -> T {
+        guard let url = components?.url else {
+            throw URLError(.badURL)
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.cachePolicy = .useProtocolCachePolicy
+        if MovieAppManager.share.lastFetchedDate ?? Date() > Utils.dateBeforeNow(seconds: 120) {
+            MovieAppManager.share.lastFetchedDate = Date()
+        } else {
+            URLCache.shared.removeCachedResponses(since: Utils.dateBeforeNow(seconds: 360))
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let decodedData = try JSONDecoder().decode(type, from: data)
+        return decodedData
+    }
 }
 
 protocol FetchMoviesProtocol {
@@ -21,20 +47,11 @@ protocol FetchMoviesProtocol {
 
 extension NetworkManager: FetchMoviesProtocol {
     func fetchSingleSuggestion(id: String) async throws -> MovieData {
-        let url = URL(string: "\(baseUrl)\(AppConstant.EndPoints.movie.description)/\(id)?api_key=\(apiKey)")
-        guard let url else {
-            throw URLError(.badURL)
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-//        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
+        let components = URLComponents(string: "\(baseUrl)\(AppConstant.EndPoints.movie.description)/\(id)?api_key=\(apiKey)") ?? URLComponents()
         
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            try validateResponse(response)
-            let movie = try JSONDecoder().decode(MovieData.self, from: data)
-            return movie
+            let movies = try await getRequestData(components: components, type: MovieData.self)
+            return movies
         } catch {
             throw error
         }
@@ -88,41 +105,12 @@ extension NetworkManager: FetchMoviesProtocol {
         if optionSelected == .search {
             components.queryItems?.append(URLQueryItem(name: "query", value: query))
         }
-        
+
         do {
-            let movieResponse = try await requestCallMovies(components: components)
+            let movieResponse = try await getRequestData(components: components, type: MoviesRoot.self)
             return movieResponse
         } catch {
             throw error
-        }
-    }
-    
-    func requestCallMovies(components: URLComponents) async throws -> MoviesRoot {
-        guard let url = components.url else {
-            throw URLError(.badURL)
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.cachePolicy = .useProtocolCachePolicy
-//        request.allHTTPHeaderFields = ["Cache-Control": "max-age=360"]
-        
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            try validateResponse(response)
-            let movieResponse = try JSONDecoder().decode(MoviesRoot.self, from: data)
-            return movieResponse
-        } catch {
-            throw error
-        }
-    }
-    
-    private func validateResponse(_ response: URLResponse) throws {
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
-        }
-        guard (200...299).contains(httpResponse.statusCode) else {
-            throw URLError(.badServerResponse)
         }
     }
 }
@@ -139,23 +127,8 @@ extension NetworkManager: GetTrailerProtocol {
             URLQueryItem(name: "api_key", value: apiKey),
         ]
         
-        guard let url = components?.url else {
-            throw URLError(.badURL)
-        }
-        
         do {
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-//            request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw URLError(.badServerResponse)
-            }
-            guard (200...299).contains(httpResponse.statusCode) else {
-                throw URLError(.badServerResponse)
-            }
-            
-            let videoResponse = try JSONDecoder().decode(VideosResponse.self, from: data)
+            let videoResponse = try await getRequestData(components: components, type: VideosResponse.self)
             return videoResponse.results
         } catch {
             throw error

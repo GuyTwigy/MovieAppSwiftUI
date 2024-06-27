@@ -21,4 +21,8 @@ class Utils {
         
         return Date().timeIntervalSince(date) > 24 * 60 * 60
     }
+    
+    static func dateBeforeNow(seconds: TimeInterval) -> Date {
+      return Date(timeIntervalSinceNow: -seconds)
+    }
 }

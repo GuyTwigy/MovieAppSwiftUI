@@ -32,6 +32,7 @@
 		9D2E18222C2C44C20089AE5C /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18212C2C44C20089AE5C /* WebView.swift */; };
 		9D2E18262C2C59840089AE5C /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18252C2C59840089AE5C /* ErrorView.swift */; };
 		9D2E18282C2C9FFA0089AE5C /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */; };
+		9D2E182D2C2D5FF30089AE5C /* MovieAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		9D2E18212C2C44C20089AE5C /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		9D2E18252C2C59840089AE5C /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
+		9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				9D274A002C2AC43F005FF14E /* MovieAppSwiftUIApp.swift */,
 				9D274A042C2AC440005FF14E /* Assets.xcassets */,
 				9D274A062C2AC440005FF14E /* Preview Content */,
+				9D2E182B2C2D5FD60089AE5C /* MovieAppManager */,
 				9D2E180C2C2AEE5B0089AE5C /* Utils */,
 				9D274A302C2AC5F1005FF14E /* Models */,
 				9D274A2D2C2AC4C8005FF14E /* NetworkManager */,
@@ -300,6 +303,14 @@
 			path = ErrorView;
 			sourceTree = "<group>";
 		};
+		9D2E182B2C2D5FD60089AE5C /* MovieAppManager */ = {
+			isa = PBXGroup;
+			children = (
+				9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */,
+			);
+			path = MovieAppManager;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -452,6 +463,7 @@
 				9D2E18222C2C44C20089AE5C /* WebView.swift in Sources */,
 				9D2E18142C2B2BE40089AE5C /* MovieDetailsViewModel.swift in Sources */,
 				9D274A012C2AC43F005FF14E /* MovieAppSwiftUIApp.swift in Sources */,
+				9D2E182D2C2D5FF30089AE5C /* MovieAppManager.swift in Sources */,
 				9D274A342C2AC624005FF14E /* VideoData.swift in Sources */,
 				9D2E18102C2AF1430089AE5C /* SingleMovieView.swift in Sources */,
 				9D2E18052C2AE31A0089AE5C /* MainViewModel.swift in Sources */,
