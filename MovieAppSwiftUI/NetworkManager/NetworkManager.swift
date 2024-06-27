@@ -20,11 +20,11 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.cachePolicy = .useProtocolCachePolicy
-        if MovieAppManager.share.lastFetchedDate ?? Date() > Utils.dateBeforeNow(seconds: 120) {
-            MovieAppManager.share.lastFetchedDate = Date()
-        } else {
-            URLCache.shared.removeCachedResponses(since: Utils.dateBeforeNow(seconds: 360))
+        
+        if MovieAppManager.share.lastFetchedDate ?? Date() < Utils.dateBeforeNow(seconds: 86400) {
+            URLCache.shared.removeCachedResponse(for: request)
         }
+        MovieAppManager.share.lastFetchedDate = Date()
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
