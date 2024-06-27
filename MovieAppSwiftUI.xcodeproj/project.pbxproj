@@ -33,6 +33,7 @@
 		9D2E18262C2C59840089AE5C /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18252C2C59840089AE5C /* ErrorView.swift */; };
 		9D2E18282C2C9FFA0089AE5C /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */; };
 		9D2E182D2C2D5FF30089AE5C /* MovieAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */; };
+		9D2E182F2C2D6B760089AE5C /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E182E2C2D6B760089AE5C /* MainViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		9D2E18252C2C59840089AE5C /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 		9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppManager.swift; sourceTree = "<group>"; };
+		9D2E182E2C2D6B760089AE5C /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				9D274A112C2AC440005FF14E /* MovieAppSwiftUITests.swift */,
+				9D2E182E2C2D6B760089AE5C /* MainViewModelTests.swift */,
 			);
 			path = MovieAppSwiftUITests;
 			sourceTree = "<group>";
@@ -475,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D274A122C2AC440005FF14E /* MovieAppSwiftUITests.swift in Sources */,
+				9D2E182F2C2D6B760089AE5C /* MainViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
