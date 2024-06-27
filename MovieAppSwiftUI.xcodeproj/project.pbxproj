@@ -132,12 +132,12 @@
 			children = (
 				9D274A002C2AC43F005FF14E /* MovieAppSwiftUIApp.swift */,
 				9D274A042C2AC440005FF14E /* Assets.xcassets */,
-				9D2E18072C2AE3580089AE5C /* Views */,
 				9D274A062C2AC440005FF14E /* Preview Content */,
 				9D2E180C2C2AEE5B0089AE5C /* Utils */,
 				9D274A302C2AC5F1005FF14E /* Models */,
 				9D274A2D2C2AC4C8005FF14E /* NetworkManager */,
 				9D274A2A2C2AC4A4005FF14E /* AppConstants */,
+				9D2E18072C2AE3580089AE5C /* Views */,
 			);
 			path = MovieAppSwiftUI;
 			sourceTree = "<group>";

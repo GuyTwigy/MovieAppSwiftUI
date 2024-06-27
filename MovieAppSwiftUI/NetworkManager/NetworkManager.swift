@@ -82,7 +82,7 @@ extension NetworkManager: FetchMoviesProtocol {
         
         components.queryItems = [
             URLQueryItem(name: "api_key", value: apiKey),
-            URLQueryItem(name: "page", value: String(page)),
+            URLQueryItem(name: "page", value: String(page))
         ]
         
         if optionSelected == .search {
@@ -104,7 +104,8 @@ extension NetworkManager: FetchMoviesProtocol {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-//        request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
+        request.cachePolicy = .useProtocolCachePolicy
+//        request.allHTTPHeaderFields = ["Cache-Control": "max-age=360"]
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -145,7 +146,7 @@ extension NetworkManager: GetTrailerProtocol {
         do {
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
-            request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
+//            request.setValue("max-age=86400", forHTTPHeaderField: "Cache-Control")
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw URLError(.badServerResponse)
