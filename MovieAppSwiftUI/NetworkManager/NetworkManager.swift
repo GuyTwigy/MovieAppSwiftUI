@@ -50,8 +50,8 @@ extension NetworkManager: FetchMoviesProtocol {
         let components = URLComponents(string: "\(baseUrl)\(AppConstant.EndPoints.movie.description)/\(id)?api_key=\(apiKey)") ?? URLComponents()
         
         do {
-            let movies = try await getRequestData(components: components, type: MovieData.self)
-            return movies
+            let movie = try await getRequestData(components: components, type: MovieData.self)
+            return movie
         } catch {
             throw error
         }

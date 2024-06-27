@@ -14,6 +14,7 @@ class MainViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {
         vm = MainViewModel()
+        vm?.moviesList.removeAll()
     }
     
     override func tearDownWithError() throws {
@@ -297,7 +298,7 @@ class MainViewModelTests: XCTestCase {
     func test_MainViewModel_fetchMoviesSuccessAddContentFalseSearch() async throws {
         //Given
         let optionSelection: OptionsSelection = .search
-        let query = ""
+        let query = "ronaldo"
         let page = 1
         let addContent = false
         
@@ -322,7 +323,7 @@ class MainViewModelTests: XCTestCase {
     func test_MainViewModel_fetchMoviesSuccessAddContentTrueSearch() async throws {
         //Given
         let optionSelection: OptionsSelection = .search
-        let query = "messi"
+        let query = "ronaldo"
         let page = 1
         
         //when
