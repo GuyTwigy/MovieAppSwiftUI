@@ -34,6 +34,7 @@
 		9D2E18282C2C9FFA0089AE5C /* ShareSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */; };
 		9D2E182D2C2D5FF30089AE5C /* MovieAppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */; };
 		9D2E182F2C2D6B760089AE5C /* MainViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E182E2C2D6B760089AE5C /* MainViewModelTests.swift */; };
+		9D2E18312C2D85FB0089AE5C /* MovieDetailsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2E18302C2D85FB0089AE5C /* MovieDetailsViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		9D2E18272C2C9FFA0089AE5C /* ShareSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetView.swift; sourceTree = "<group>"; };
 		9D2E182C2C2D5FF30089AE5C /* MovieAppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieAppManager.swift; sourceTree = "<group>"; };
 		9D2E182E2C2D6B760089AE5C /* MainViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelTests.swift; sourceTree = "<group>"; };
+		9D2E18302C2D85FB0089AE5C /* MovieDetailsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 			children = (
 				9D274A112C2AC440005FF14E /* MovieAppSwiftUITests.swift */,
 				9D2E182E2C2D6B760089AE5C /* MainViewModelTests.swift */,
+				9D2E18302C2D85FB0089AE5C /* MovieDetailsViewTests.swift */,
 			);
 			path = MovieAppSwiftUITests;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 			files = (
 				9D274A122C2AC440005FF14E /* MovieAppSwiftUITests.swift in Sources */,
 				9D2E182F2C2D6B760089AE5C /* MainViewModelTests.swift in Sources */,
+				9D2E18312C2D85FB0089AE5C /* MovieDetailsViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

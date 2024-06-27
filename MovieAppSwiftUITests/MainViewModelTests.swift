@@ -10,7 +10,7 @@ import XCTest
 
 @MainActor
 class MainViewModelTests: XCTestCase {
-    var vm: MainViewModel!
+    var vm: MainViewModel?
     
     override func setUpWithError() throws {
         vm = MainViewModel()
@@ -25,7 +25,7 @@ class MainViewModelTests: XCTestCase {
         let ids: [String] = ["1817", "745", "769", "278", "429"]
         
         //When
-        await vm.fetchSuggestions()
+        await vm?.fetchSuggestions()
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -33,14 +33,14 @@ class MainViewModelTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssertFalse(vm.suggestedError)
-            XCTAssertFalse(vm.suggestionIsLoading)
-            XCTAssertEqual(vm.suggestedMovies.count, 5)
-            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm.suggestedMovies[0].id ?? 1)" }))
-            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm.suggestedMovies[1].id ?? 1)" }))
-            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm.suggestedMovies[2].id ?? 1)" }))
-            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm.suggestedMovies[3].id ?? 1)" }))
-            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm.suggestedMovies[4].id ?? 1)" }))
+            XCTAssertFalse(vm?.suggestedError ?? true)
+            XCTAssertFalse(vm?.suggestionIsLoading ?? true)
+            XCTAssertEqual(vm?.suggestedMovies.count ?? 0, 5)
+            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm?.suggestedMovies[0].id ?? 1)" }))
+            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm?.suggestedMovies[1].id ?? 1)" }))
+            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm?.suggestedMovies[2].id ?? 1)" }))
+            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm?.suggestedMovies[3].id ?? 1)" }))
+            XCTAssertTrue(ids.contains( where: { $0 == "\(self.vm?.suggestedMovies[4].id ?? 1)" }))
         }
     }
     
@@ -52,7 +52,7 @@ class MainViewModelTests: XCTestCase {
         let addContent = false
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -61,11 +61,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 8)
-            XCTAssertEqual(self.vm.moviesList.count, 20)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 8)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 20)
         }
     }
 
@@ -76,8 +76,8 @@ class MainViewModelTests: XCTestCase {
         let page = 1
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -86,11 +86,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 20)
-            XCTAssertEqual(self.vm.moviesList.count, 40)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 20)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
     
@@ -102,7 +102,7 @@ class MainViewModelTests: XCTestCase {
         let addContent = false
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -111,11 +111,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 8)
-            XCTAssertEqual(self.vm.moviesList.count, 20)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 8)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 20)
         }
     }
 
@@ -126,8 +126,8 @@ class MainViewModelTests: XCTestCase {
         let page = 1
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -136,11 +136,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 20)
-            XCTAssertEqual(self.vm.moviesList.count, 40)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 20)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
     
@@ -152,7 +152,7 @@ class MainViewModelTests: XCTestCase {
         let addContent = false
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -161,11 +161,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 8)
-            XCTAssertEqual(self.vm.moviesList.count, 20)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 8)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 20)
         }
     }
 
@@ -176,8 +176,8 @@ class MainViewModelTests: XCTestCase {
         let page = 1
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -186,11 +186,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 20)
-            XCTAssertEqual(self.vm.moviesList.count, 40)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 20)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
     
@@ -202,7 +202,7 @@ class MainViewModelTests: XCTestCase {
         let addContent = false
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -211,11 +211,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 8)
-            XCTAssertEqual(self.vm.moviesList.count, 20)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 8)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 20)
         }
     }
 
@@ -226,8 +226,8 @@ class MainViewModelTests: XCTestCase {
         let page = 1
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -236,11 +236,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 20)
-            XCTAssertEqual(self.vm.moviesList.count, 40)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 20)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
     
@@ -252,7 +252,7 @@ class MainViewModelTests: XCTestCase {
         let addContent = false
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -261,11 +261,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 8)
-            XCTAssertEqual(self.vm.moviesList.count, 20)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 8)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 20)
         }
     }
 
@@ -276,8 +276,8 @@ class MainViewModelTests: XCTestCase {
         let page = 1
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -286,11 +286,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 20)
-            XCTAssertEqual(self.vm.moviesList.count, 40)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 20)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
     
@@ -302,7 +302,7 @@ class MainViewModelTests: XCTestCase {
         let addContent = false
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -311,11 +311,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 8)
-            XCTAssertEqual(self.vm.moviesList.count, 20)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 8)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 20)
         }
     }
 
@@ -326,8 +326,8 @@ class MainViewModelTests: XCTestCase {
         let page = 1
         
         //when
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
-        await vm.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: false)
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page + 1, addContent: true)
         
         //Then
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
@@ -336,11 +336,11 @@ class MainViewModelTests: XCTestCase {
                 return
             }
             
-            XCTAssertFalse(self.vm.fetchingError)
-            XCTAssertNotNil(self.vm.movieRoot)
-            XCTAssertFalse(self.vm.moviesList.isEmpty)
-            XCTAssertGreaterThan(self.vm.moviesList.count, 20)
-            XCTAssertEqual(self.vm.moviesList.count, 40)
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertNotNil(self.vm?.movieRoot)
+            XCTAssertFalse(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertGreaterThan(self.vm?.moviesList.count ?? 0, 20)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
 }
