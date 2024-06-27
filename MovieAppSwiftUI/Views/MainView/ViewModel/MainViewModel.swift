@@ -27,6 +27,7 @@ class MainViewModel: ObservableObject {
     }
     
     func fetchSuggestions() async {
+        suggestedError = false
         suggestionIsLading = true
         do {
             let movies = try await dataService.fetchMultipleSuggestions(ids: ["1817", "745", "769", "278", "429"])
@@ -40,15 +41,18 @@ class MainViewModel: ObservableObject {
     }
     
     func fetchMovies(optionSelection: OptionsSelection, query: String, page: Int, addContent: Bool) async {
+        fetchingError = false
+        if !addContent {
+            moviesList.removeAll()
+        }
         do {
             let moviesRoot = try await dataService.fetchMovies(optionSelected: optionSelection, query: query, page: page)
-            self.movieRoot = nil
-            self.movieRoot = moviesRoot
+            movieRoot = nil
+            movieRoot = moviesRoot
             if addContent {
-                self.moviesList.append(contentsOf: moviesRoot.results ?? [])
+                moviesList.append(contentsOf: moviesRoot.results ?? [])
             } else {
-                self.moviesList.removeAll()
-                self.moviesList = moviesRoot.results ?? []
+                moviesList = moviesRoot.results ?? []
             }
         } catch {
             print("Error: \(error.localizedDescription)")

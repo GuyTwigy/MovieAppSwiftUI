@@ -43,4 +43,8 @@ struct AppConstant {
             }
         }
     }
+    
+    struct UserDefualtsKey {
+        static let lastFetchedDate: String = "lastFetchedDate"
+    }
 }
