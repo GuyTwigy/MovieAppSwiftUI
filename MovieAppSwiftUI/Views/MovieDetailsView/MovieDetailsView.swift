@@ -49,6 +49,7 @@ struct MovieDetailsView: View {
                                 .padding(10)
                                 .background(Color.white.opacity(0.7))
                                 .cornerRadius(15)
+                                .foregroundStyle(ForegroundStyle())
                         }
                         .sheet(isPresented: $isShareSheetPresented) {
                             if let movie = vm.movie {
@@ -87,14 +88,13 @@ struct MovieDetailsView: View {
                                     }
                                 }
                             }) {
-                                Spacer()
                                 Text("Show Trailer")
                                     .frame(maxWidth: .infinity)
-                                    .padding()
+                                    .frame(height: 50)
                                     .foregroundColor(Color.white)
                                     .background(Color.blue)
                                     .cornerRadius(10)
-                                Spacer()
+                                    .padding()
                             }
                             .padding(.horizontal, 10)
                         }
