@@ -20,7 +20,19 @@ struct ShareSheetView: UIViewControllerRepresentable {
         ]
         
         if let posterPath = movie.posterPath, let imageUrl = Utils.getImageUrl(posterPath: posterPath) {
-            itemsToShare.append(KFImage(imageUrl))
+            KingfisherManager.shared.retrieveImage(with: imageUrl) { retrieveImageResult in
+                switch retrieveImageResult {
+                case .success(_):
+                    do {
+                        let image = try retrieveImageResult.get().image
+                        itemsToShare.append(image)
+                    } catch {
+                        print("Fail to fetch image to share, error: \(error.localizedDescription)")
+                    }
+                case .failure(_):
+                    print("Fail to fetch image to share")
+                }
+            }
         }
         
         let activityViewController = UIActivityViewController(activityItems: itemsToShare, applicationActivities: nil)
@@ -45,7 +57,3 @@ struct ShareSheetView: UIViewControllerRepresentable {
         var sourceView: UIView?
     }
 }
-
-//#Preview {
-//    ShareSheetView(movie: MovieData(id: 1, idString: "1", title: "title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 title1 ", posterPath: "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg", overview: "overview1", releaseDate: "releaseDate1", originalLanguage: "EN", voteAverage: 10.0, date: Date()))
-//}

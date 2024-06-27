@@ -14,9 +14,9 @@ struct SingleDetailView: View {
     
     var body: some View {
         VStack (alignment: .leading) {
-            HStack {
+            VStack(alignment: .leading) {
                 Text(title)
-                    .font(.headline)
+                    .font(.system(size: 25, weight: .bold))
                     .padding(.horizontal)
                     .foregroundColor(.black)
                 
