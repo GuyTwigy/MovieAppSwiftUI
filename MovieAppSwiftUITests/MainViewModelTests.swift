@@ -8,38 +8,6 @@
 import XCTest
 @testable import MovieAppSwiftUI
 
-class MockMainViewModel: FetchMoviesProtocol {
-    var shouldReturnError = false
-    var fetchMultipleSuggestionsResult: [MovieData] = []
-    var fetchMoviesResult: MoviesRoot = MoviesRoot(results: [], page: nil, totalPages: nil)
-    
-    func fetchMultipleSuggestions(ids: [String]) async throws -> [MovieData] {
-        if shouldReturnError {
-            throw NSError(domain: "error", code: 0, userInfo: nil)
-        }
-        return fetchMultipleSuggestionsResult
-    }
-    
-    func fetchMovies(optionSelected: OptionsSelection, query: String, page: Int) async throws -> MoviesRoot {
-        if shouldReturnError {
-            throw NSError(domain: "error", code: 0, userInfo: nil)
-        }
-        return fetchMoviesResult
-    }
-}
-
-class MockMovieDetailsViewModel: GetTrailerProtocol {
-    var shouldReturnError = false
-    var getTrailerResult: [VideoData] = []
-    
-    func getTrailer(id: String) async throws -> [VideoData] {
-        if shouldReturnError {
-            throw NSError(domain: "error", code: 0, userInfo: nil)
-        }
-        return getTrailerResult
-    }
-}
-
 @MainActor
 class MainViewModelTests: XCTestCase {
     var vm: MainViewModel!
