@@ -217,4 +217,28 @@ final class FetchMoviesProtocolTests: XCTestCase {
         
         await fulfillment(of: [expectation], timeout: 5.0, enforceOrder: true)
     }
+    
+    func test_NetworkManager_fetchMoviesTypeSearchSuccessNoResults() async throws {
+        // Given
+        //Given
+        let optionSelection: OptionsSelection = .search
+        let query = "guytwigggg"
+        let page = 1
+        
+        // When
+        let expectation = self.expectation(description: "Fetch Movies type Search with Success but with no results")
+        do {
+            let movieRoot = try await dataService?.fetchMovies(optionSelected: optionSelection, query: query, page: page)
+            expectation.fulfill()
+            
+            //Then
+            XCTAssertTrue(movieRoot?.results?.isEmpty ?? true)
+            XCTAssertLessThan(movieRoot?.results?.count ?? 0, 3)
+            XCTAssertEqual(movieRoot?.results?.count ?? 10, 0)
+        } catch {
+            XCTFail()
+        }
+        
+        await fulfillment(of: [expectation], timeout: 5.0, enforceOrder: true)
+    }
 }

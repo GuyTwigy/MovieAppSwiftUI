@@ -344,4 +344,28 @@ class MainViewModelTests: XCTestCase {
             XCTAssertEqual(self.vm?.moviesList.count ?? 0, 40)
         }
     }
+    
+    func test_MainViewModel_fetchMoviesSuccessAddContentFalseSearchNoResults() async throws {
+        //Given
+        let optionSelection: OptionsSelection = .search
+        let query = "guytwigggg"
+        let page = 1
+        let addContent = false
+        
+        //when
+        await vm?.fetchMovies(optionSelection: optionSelection, query: query, page: page, addContent: addContent)
+        
+        //Then
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+            guard let self else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertFalse(self.vm?.fetchingError ?? true)
+            XCTAssertTrue(self.vm?.moviesList.isEmpty ?? true)
+            XCTAssertLessThan(self.vm?.moviesList.count ?? 0, 3)
+            XCTAssertEqual(self.vm?.moviesList.count ?? 0, 0)
+        }
+    }
 }
