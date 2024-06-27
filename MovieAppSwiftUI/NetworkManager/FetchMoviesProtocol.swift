@@ -17,7 +17,7 @@ extension NetworkManager: FetchMoviesProtocol {
     func fetchSingleSuggestion(id: String) async throws -> MovieData {
         let components = URLComponents(string: "\(baseUrl)\(AppConstant.EndPoints.movie.description)/\(id)?api_key=\(apiKey)") ?? URLComponents()
         
-        var clearCache = MovieAppManager.share.lastFetchedSuggestedMoviesDate ?? Date() < Utils.dateBeforeNow(seconds: 86400)
+        let clearCache = MovieAppManager.share.lastFetchedSuggestedMoviesDate ?? Date() < Utils.dateBeforeNow(seconds: 86400)
         MovieAppManager.share.lastFetchedSuggestedMoviesDate = Date()
         
         do {
@@ -51,8 +51,8 @@ extension NetworkManager: FetchMoviesProtocol {
     }
     
     func fetchMovies(optionSelected: OptionsSelection, query: String = "", page: Int = 1) async throws -> MoviesRoot {
-        var components = createURLComponents(optionSelected: optionSelected, query: query, page: page)
-        var clearCache = shouldClearCache(optionSelected: optionSelected)
+        let components = createURLComponents(optionSelected: optionSelected, query: query, page: page)
+        let clearCache = shouldClearCache(optionSelected: optionSelected)
         
         do {
             let movieResponse = try await getRequestData(clearCache: clearCache, components: components, type: MoviesRoot.self)
