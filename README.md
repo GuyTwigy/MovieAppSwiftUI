@@ -48,6 +48,10 @@ Features
     The app supports iPhone devices, ensuring a versatile user experience across different screen sizes.
 
 
+Testing
+
+The app includes test files to verify its functionality.
+
 
 Technical Details
 
